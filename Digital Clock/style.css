@@ -1,0 +1,780 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0f1117;
+  --surface: #1a1c25;
+  --surface-hover: #24262f;
+  --border: #2a2d38;
+  --text: #e4e4e7;
+  --text-muted: #8b8d97;
+  --primary: #6366f1;
+  --primary-glow: rgba(99, 102, 241, 0.25);
+  --danger: #ef4444;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --radius: 12px;
+  --font: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+[data-theme="light"] {
+  --bg: #f4f4f5;
+  --surface: #ffffff;
+  --surface-hover: #f0f0f2;
+  --border: #d4d4d8;
+  --text: #18181b;
+  --text-muted: #71717a;
+  --primary: #4f46e5;
+  --primary-glow: rgba(79, 70, 229, 0.15);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
+  transition: background 0.3s, color 0.3s;
+}
+
+.app {
+  width: 100%;
+  max-width: 480px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.logo span {
+  color: var(--primary);
+}
+
+.header-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-icon {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: var(--font);
+  transition: all 0.2s;
+}
+
+.btn-icon:hover {
+  background: var(--surface-hover);
+  border-color: var(--primary);
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+}
+
+.sun { display: none; }
+.moon { display: block; }
+
+[data-theme="light"] .sun { display: block; }
+[data-theme="light"] .moon { display: none; }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 4px;
+  gap: 2px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border);
+}
+
+.tab {
+  flex: 1;
+  padding: 0.6rem 0.3rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab.active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 2px 8px var(--primary-glow);
+}
+
+/* Panels */
+.panel {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.panel.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Clock Display */
+.clock-display {
+  text-align: center;
+  padding: 2rem 0 1.5rem;
+}
+
+.time-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+}
+
+.digit {
+  font-family: var(--font);
+  font-size: 4rem;
+  font-weight: 700;
+  letter-spacing: -2px;
+  min-width: 2ch;
+  text-align: center;
+  background: linear-gradient(135deg, var(--text), var(--text-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.separator {
+  font-family: var(--font);
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: var(--primary);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.3; }
+}
+
+.ampm {
+  font-family: var(--font);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: 8px;
+}
+
+.date-row {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Analog Clock */
+.analog-clock {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0 2rem;
+}
+
+.clock-face {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+}
+
+.clock-face::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  border-radius: 4px;
+  transform: translateX(-50%) rotate(0deg);
+}
+
+.hour-hand {
+  width: 4px;
+  height: 50px;
+  background: var(--text);
+}
+
+.minute-hand {
+  width: 3px;
+  height: 65px;
+  background: var(--text-muted);
+}
+
+.second-hand {
+  width: 1.5px;
+  height: 72px;
+  background: var(--primary);
+}
+
+.center-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--primary);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+/* Stopwatch */
+.stopwatch-display {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.sw-digit {
+  font-family: var(--font);
+  font-size: 3.5rem;
+  font-weight: 700;
+  min-width: 2ch;
+  text-align: center;
+}
+
+.sw-sep {
+  font-family: var(--font);
+  font-size: 3rem;
+  color: var(--text-muted);
+  margin: 0 2px;
+}
+
+.sw-ms {
+  font-size: 2.5rem;
+  color: var(--text-muted);
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  padding: 0.7rem 1.8rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 2px 12px var(--primary-glow);
+}
+
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--surface-hover);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+.btn-danger:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+/* Lap List */
+.lap-list {
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.lap-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 0.4rem;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.lap-list .lap-num {
+  color: var(--text-muted);
+}
+
+.lap-list .lap-best {
+  color: var(--success);
+}
+
+.lap-list .lap-worst {
+  color: var(--danger);
+}
+
+/* Timer */
+.timer-setup {
+  padding: 2rem 0;
+}
+
+.timer-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.timer-input-group {
+  text-align: center;
+}
+
+.timer-input {
+  width: 80px;
+  height: 70px;
+  text-align: center;
+  font-family: var(--font);
+  font-size: 2rem;
+  font-weight: 700;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.timer-input:focus {
+  border-color: var(--primary);
+}
+
+.timer-input-group label {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.timer-presets {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.btn-preset {
+  padding: 0.5rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-preset:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.timer-running {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.timer-ring {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.timer-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ring-bg {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 6;
+}
+
+.ring-progress {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 565.48;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.timer-remaining {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font);
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+/* Alarm */
+.alarm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem 0;
+}
+
+.alarm-time-input,
+.alarm-label-input {
+  padding: 0.8rem 1rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.alarm-time-input {
+  font-family: var(--font);
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.alarm-time-input:focus,
+.alarm-label-input:focus {
+  border-color: var(--primary);
+}
+
+.alarm-list {
+  list-style: none;
+}
+
+.alarm-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem;
+  font-size: 0.9rem;
+}
+
+.alarm-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 0.5rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.alarm-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.alarm-info-time {
+  font-family: var(--font);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.alarm-info-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.alarm-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toggle {
+  width: 44px;
+  height: 24px;
+  background: var(--border);
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.toggle.active {
+  background: var(--primary);
+}
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.2s;
+}
+
+.toggle.active::after {
+  transform: translateX(20px);
+}
+
+.btn-delete {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.btn-delete:hover {
+  color: var(--danger);
+}
+
+/* Alarm ringing overlay */
+.alarm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.3s ease;
+}
+
+.alarm-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  text-align: center;
+  max-width: 320px;
+  width: 90%;
+}
+
+.alarm-modal .alarm-ring-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+.alarm-modal h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.alarm-modal p {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+/* World Clocks */
+.world-add {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.tz-select {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.tz-select:focus {
+  border-color: var(--primary);
+}
+
+.world-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.world-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  animation: fadeIn 0.2s ease;
+}
+
+.world-card-city {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.world-card-offset {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.world-card-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.world-card-time {
+  font-family: var(--font);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  body {
+    padding: 1rem 0.75rem;
+  }
+
+  .digit {
+    font-size: 3rem;
+  }
+
+  .separator {
+    font-size: 2.5rem;
+  }
+
+  .sw-digit {
+    font-size: 2.5rem;
+  }
+
+  .sw-ms {
+    font-size: 1.8rem;
+  }
+
+  .timer-input {
+    width: 65px;
+    height: 60px;
+    font-size: 1.6rem;
+  }
+
+  .tab {
+    font-size: 0.72rem;
+    padding: 0.5rem 0.2rem;
+  }
+}
